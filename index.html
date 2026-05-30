@@ -1,63 +1,123 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabbit AR</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script
-        type="module"
-        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-    </script>
+<title>ARのテスト</title>
 
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
+<script
+type="module"
+src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+</script>
 
-        model-viewer {
-            width: 100vw;
-            height: 100vh;
-        }
+<style>
 
-        #ar-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-            background: #4CAF50;
-            color: white;
+body{
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
 
-            border: none;
-            border-radius: 12px;
+    background:linear-gradient(
+        180deg,
+        #f4ecff 0%,
+        #e6d8ff 100%
+    );
 
-            padding: 16px 24px;
-            font-size: 18px;
-            font-weight: bold;
+    font-family:sans-serif;
 
-            cursor: pointer;
+    display:flex;
+    flex-direction:column;
+}
 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+/* 上部タイトル */
 
-        #ar-button:hover {
-            opacity: 0.9;
-        }
-    </style>
+header{
+    height:10vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:#5a2ca0;
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* モデル表示 */
+
+.viewer-area{
+    height:75vh;
+}
+
+model-viewer{
+    width:100%;
+    height:100%;
+    background:transparent;
+}
+
+/* 下部ボタン */
+
+footer{
+    height:15vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#ar-button{
+
+    background:#7c3aed;
+
+    color:white;
+
+    border:none;
+
+    border-radius:16px;
+
+    padding:16px 28px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.25);
+
+    cursor:pointer;
+}
+
+#ar-button:active{
+    transform:scale(0.98);
+}
+
+</style>
 </head>
 
 <body>
 
+<header>
+ARのテスト
+</header>
+
+<div class="viewer-area">
+
 <model-viewer
-    id="rabbit-viewer"
     src="rabbit.glb"
     ios-src="rabbit.usdz"
+
     ar
     ar-modes="webxr scene-viewer quick-look"
+
     camera-controls
     autoplay
+
     shadow-intensity="1">
 
     <button slot="ar-button" id="ar-button">
@@ -66,143 +126,10 @@
 
 </model-viewer>
 
-</body>
-</html><!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabbit AR</title>
+</div>
 
-    <script
-        type="module"
-        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-    </script>
-
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-
-        model-viewer {
-            width: 100vw;
-            height: 100vh;
-        }
-
-        #ar-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-
-            background: #4CAF50;
-            color: white;
-
-            border: none;
-            border-radius: 12px;
-
-            padding: 16px 24px;
-            font-size: 18px;
-            font-weight: bold;
-
-            cursor: pointer;
-
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        #ar-button:hover {
-            opacity: 0.9;
-        }
-    </style>
-</head>
-
-<body>
-
-<model-viewer
-    id="rabbit-viewer"
-    src="rabbit.glb"
-    ios-src="rabbit.usdz"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls
-    autoplay
-    shadow-intensity="1">
-
-    <button slot="ar-button" id="ar-button">
-        📸 このキャラクターと写真を撮る
-    </button>
-
-</model-viewer>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rabbit AR</title>
-
-    <script
-        type="module"
-        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-    </script>
-
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-
-        model-viewer {
-            width: 100vw;
-            height: 100vh;
-        }
-
-        #ar-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-
-            background: #4CAF50;
-            color: white;
-
-            border: none;
-            border-radius: 12px;
-
-            padding: 16px 24px;
-            font-size: 18px;
-            font-weight: bold;
-
-            cursor: pointer;
-
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        #ar-button:hover {
-            opacity: 0.9;
-        }
-    </style>
-</head>
-
-<body>
-
-<model-viewer
-    id="rabbit-viewer"
-    src="rabbit.glb"
-    ios-src="rabbit.usdz"
-    ar
-    ar-modes="webxr scene-viewer quick-look"
-    camera-controls
-    autoplay
-    shadow-intensity="1">
-
-    <button slot="ar-button" id="ar-button">
-        📸 このキャラクターと写真を撮る
-    </button>
-
-</model-viewer>
+<footer>
+</footer>
 
 </body>
 </html>
