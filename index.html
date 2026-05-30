@@ -9,19 +9,200 @@
         type="module"
         src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
     </script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        model-viewer {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ar-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            background: #4CAF50;
+            color: white;
+
+            border: none;
+            border-radius: 12px;
+
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #ar-button:hover {
+            opacity: 0.9;
+        }
+    </style>
 </head>
 
-<body style="margin:0;">
+<body>
 
-    <model-viewer
-        src="rabbit.usdz"
-        ar
-        ar-modes="webxr scene-viewer quick-look"
-        camera-controls
-        autoplay
-        shadow-intensity="1"
-        style="width:100vw; height:100vh;">
-    </model-viewer>
+<model-viewer
+    id="rabbit-viewer"
+    src="rabbit.glb"
+    ios-src="rabbit.usdz"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    autoplay
+    shadow-intensity="1">
+
+    <button slot="ar-button" id="ar-button">
+        📸 このキャラクターと写真を撮る
+    </button>
+
+</model-viewer>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rabbit AR</title>
+
+    <script
+        type="module"
+        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        model-viewer {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ar-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            background: #4CAF50;
+            color: white;
+
+            border: none;
+            border-radius: 12px;
+
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #ar-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+<model-viewer
+    id="rabbit-viewer"
+    src="rabbit.glb"
+    ios-src="rabbit.usdz"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    autoplay
+    shadow-intensity="1">
+
+    <button slot="ar-button" id="ar-button">
+        📸 このキャラクターと写真を撮る
+    </button>
+
+</model-viewer>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rabbit AR</title>
+
+    <script
+        type="module"
+        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        model-viewer {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ar-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            background: #4CAF50;
+            color: white;
+
+            border: none;
+            border-radius: 12px;
+
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        #ar-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+<model-viewer
+    id="rabbit-viewer"
+    src="rabbit.glb"
+    ios-src="rabbit.usdz"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    autoplay
+    shadow-intensity="1">
+
+    <button slot="ar-button" id="ar-button">
+        📸 このキャラクターと写真を撮る
+    </button>
+
+</model-viewer>
 
 </body>
 </html>
