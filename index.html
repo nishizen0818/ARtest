@@ -38,6 +38,7 @@ body {
     font-size: 14px;
     display: none;
     z-index: 10;
+    text-align: center;
 }
 
 /* ARビュー */
@@ -91,10 +92,9 @@ model-viewer {
 <button id="photo-btn">📸 写真を撮る</button>
 
 <script>
+// 1. URLパラメータから「monsterId」を取得
 const params = new URLSearchParams(window.location.search);
-
-const category = params.get("category");
-const number = params.get("number"); // egg / 1 / 2 / 3 など
+const monsterId = params.get("monsterId");
 
 const errorBox = document.getElementById("error");
 
@@ -104,27 +104,71 @@ function showError(msg) {
 }
 
 /**
- * ❗バリデーション
+ * 🛠️ モンスターIDとファイル名のマッピング定義
+ * 
+ * アプリの「monsterMasterId」に紐づくカテゴリと番号をここに定義します。
+ * 実際のアプリのマスターデータ（IDと進化段階など）に合わせて必要に応じ変更してください。
  */
-if (!category || !number) {
-    showError("URLパラメータが不足しています（category / number）");
+const monsterMap = {
+    // 🟩 walking シリーズ
+    1: { category: "walking", number: "egg" },
+    2: { category: "walking", number: "1" },
+    3: { category: "walking", number: "2" },
+    4: { category: "walking", number: "3" },
+    
+    // 🟦 running シリーズ
+    5: { category: "running", number: "egg" },
+    6: { category: "running", number: "1" },
+    7: { category: "running", number: "2" },
+    8: { category: "running", number: "3" },
+
+    // 🟥 strength（筋トレ） シリーズ
+    9: { category: "strength", number: "egg" },
+    10: { category: "strength", number: "1" },
+    11: { category: "strength", number: "2" },
+    12: { category: "strength", number: "3" },
+
+    // 🟨 stretch シリーズ
+    13: { category: "stretch", number: "egg" },
+    14: { category: "stretch", number: "1" },
+    15: { category: "stretch", number: "2" },
+    16: { category: "stretch", number: "3" },
+
+    // 🟪 sports シリーズ
+    17: { category: "sports", number: "egg" },
+    18: { category: "sports", number: "1" },
+    19: { category: "sports", number: "2" },
+    20: { category: "sports", number: "3" }
+};
+
+// 2. パラメータのチェックとモデルの読み込み
+if (!monsterId) {
+    showError("URLパラメータが不足しています（monsterId がありません）");
 } else {
+    // 取得したIDに対応するモンスター情報を探す
+    const monsterInfo = monsterMap[monsterId];
 
-    const fileName = `${category}_${number}_animation`;
+    if (!monsterInfo) {
+        showError(`未登録のモンスターIDです (ID: ${monsterId})`);
+    } else {
+        // マッピングデータからファイル名を生成（例: dragon_3_animation）
+        const fileName = `${monsterInfo.category}_${monsterInfo.number}_animation`;
 
-    const viewer = document.getElementById("viewer");
+        const viewer = document.getElementById("viewer");
+        
+        // パスを動的にセット
+        viewer.setAttribute("src", `${fileName}.glb`);
+        viewer.setAttribute("ios-src", `${fileName}.usdz`);
 
-    viewer.setAttribute("src", `${fileName}.glb`);
-    viewer.setAttribute("ios-src", `${fileName}.usdz`);
-
+        console.log(`[成功] モデルを読み込みました: ${fileName}`);
+    }
 }
 
 /**
- * 写真ボタン（UIだけ）
- * ※実際の撮影はmodel-viewer側AR機能に依存
+ * 写真ボタン（UI動作のみ）
  */
 document.getElementById("photo-btn").addEventListener("click", () => {
-    alert("ARモードで写真を撮影してください");
+    alert("ARモードに切り替えてから写真を撮影してください");
 });
 </script>
 
