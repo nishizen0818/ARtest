@@ -19,9 +19,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-
     background: #f3e7d3; /* ベージュ */
-
     font-family: sans-serif;
 }
 
@@ -47,32 +45,6 @@ model-viewer {
     height: 100%;
     background: transparent;
 }
-
-/* 写真ボタン（シンプル） */
-#photo-btn {
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    background: #7c3aed;
-    color: white;
-
-    border: none;
-    border-radius: 999px;
-
-    padding: 14px 22px;
-    font-size: 16px;
-    font-weight: bold;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-
-    z-index: 10;
-}
-
-#photo-btn:active {
-    transform: translateX(-50%) scale(0.98);
-}
 </style>
 </head>
 
@@ -89,8 +61,6 @@ model-viewer {
     shadow-intensity="1">
 </model-viewer>
 
-<button id="photo-btn">📸 写真を撮る</button>
-
 <script>
 // 1. URLパラメータから「monsterId」を取得
 const params = new URLSearchParams(window.location.search);
@@ -105,9 +75,6 @@ function showError(msg) {
 
 /**
  * 🛠️ モンスターIDとファイル名のマッピング定義
- * 
- * アプリの「monsterMasterId」に紐づくカテゴリと番号をここに定義します。
- * 実際のアプリのマスターデータ（IDと進化段階など）に合わせて必要に応じ変更してください。
  */
 const monsterMap = {
     // 🟩 walking シリーズ
@@ -122,7 +89,7 @@ const monsterMap = {
     7: { category: "running", number: "2" },
     8: { category: "running", number: "3" },
 
-    // 🟥 strength（筋トレ） シリーズ
+    // 🟥 strength シリーズ
     9: { category: "strength", number: "egg" },
     10: { category: "strength", number: "1" },
     11: { category: "strength", number: "2" },
@@ -145,31 +112,20 @@ const monsterMap = {
 if (!monsterId) {
     showError("URLパラメータが不足しています（monsterId がありません）");
 } else {
-    // 取得したIDに対応するモンスター情報を探す
     const monsterInfo = monsterMap[monsterId];
 
     if (!monsterInfo) {
         showError(`未登録のモンスターIDです (ID: ${monsterId})`);
     } else {
-        // マッピングデータからファイル名を生成（例: dragon_3_animation）
         const fileName = `${monsterInfo.category}_${monsterInfo.number}_animation`;
-
         const viewer = document.getElementById("viewer");
         
-        // パスを動的にセット
         viewer.setAttribute("src", `${fileName}.glb`);
         viewer.setAttribute("ios-src", `${fileName}.usdz`);
 
         console.log(`[成功] モデルを読み込みました: ${fileName}`);
     }
 }
-
-/**
- * 写真ボタン（UI動作のみ）
- */
-document.getElementById("photo-btn").addEventListener("click", () => {
-    alert("ARモードに切り替えてから写真を撮影してください");
-});
 </script>
 
 </body>
