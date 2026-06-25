@@ -35,15 +35,48 @@ body {
     border-radius: 10px;
     font-size: 14px;
     display: none;
-    z-index: 10;
+    z-index: 20;
     text-align: center;
 }
 
-/* ARビュー */
+/* ARビューのエリア */
 model-viewer {
     width: 100%;
     height: 100%;
     background: transparent;
+    --ar-button-display: none; /* 元々の自動ARボタンを完全に非表示にする */
+}
+
+/* 🟢 自作の「現実世界に呼び出す」ボタン */
+#ar-trigger-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: #2563eb; /* 鮮やかなブルー */
+    color: white;
+
+    border: none;
+    border-radius: 16px;
+
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: bold;
+
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+    z-index: 10;
+    
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#ar-trigger-btn:active {
+    background: #1d4ed8;
+    transform: translateX(-50%) scale(0.96);
 }
 </style>
 </head>
@@ -60,6 +93,10 @@ model-viewer {
     autoplay
     shadow-intensity="1">
 </model-viewer>
+
+<button id="ar-trigger-btn">
+    🕶️ 現実世界に呼び出す
+</button>
 
 <script>
 // 1. URLパラメータから「monsterId」を取得
@@ -108,6 +145,8 @@ const monsterMap = {
     20: { category: "sports", number: "3" }
 };
 
+const viewer = document.getElementById("viewer");
+
 // 2. パラメータのチェックとモデルの読み込み
 if (!monsterId) {
     showError("URLパラメータが不足しています（monsterId がありません）");
@@ -118,7 +157,6 @@ if (!monsterId) {
         showError(`未登録のモンスターIDです (ID: ${monsterId})`);
     } else {
         const fileName = `${monsterInfo.category}_${monsterInfo.number}_animation`;
-        const viewer = document.getElementById("viewer");
         
         viewer.setAttribute("src", `${fileName}.glb`);
         viewer.setAttribute("ios-src", `${fileName}.usdz`);
@@ -126,6 +164,17 @@ if (!monsterId) {
         console.log(`[成功] モデルを読み込みました: ${fileName}`);
     }
 }
+
+/**
+ * 🚀 「現実世界に呼び出す」ボタンが押された時の処理
+ * model-viewer の持つ「activateAR()」関数をJavaScriptから強制的に叩きます。
+ */
+document.getElementById("ar-trigger-btn").addEventListener("click", () => {
+    if (viewer) {
+        // model-viewerのARモードを強制起動
+        viewer.activateAR();
+    }
+});
 </script>
 
 </body>
