@@ -47,7 +47,7 @@ model-viewer {
     --ar-button-display: none; /* 元々の自動ARボタンを完全に非表示にする */
 }
 
-/* 🟢 自作の「現実世界に呼び出す」ボタン */
+/* 自作の「現実世界に呼び出す」ボタン */
 #ar-trigger-btn {
     position: absolute;
     bottom: 30px;
@@ -89,6 +89,7 @@ model-viewer {
     id="viewer"
     ar
     ar-modes="webxr scene-viewer quick-look"
+    ar-scale="0.03"
     camera-controls
     autoplay
     shadow-intensity="1">
@@ -167,11 +168,9 @@ if (!monsterId) {
 
 /**
  * 🚀 「現実世界に呼び出す」ボタンが押された時の処理
- * model-viewer の持つ「activateAR()」関数をJavaScriptから強制的に叩きます。
  */
 document.getElementById("ar-trigger-btn").addEventListener("click", () => {
     if (viewer) {
-        // model-viewerのARモードを強制起動
         viewer.activateAR();
     }
 });
