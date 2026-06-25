@@ -4,132 +4,129 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ARのテスト</title>
+<title>FitnessQuest AR</title>
 
-<script
-type="module"
-src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-</script>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    width:100vw;
-    height:100vh;
-    overflow:hidden;
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 
-    background:linear-gradient(
-        180deg,
-        #f4ecff 0%,
-        #e6d8ff 100%
-    );
+    background: #f3e7d3; /* ベージュ */
 
-    font-family:sans-serif;
-
-    display:flex;
-    flex-direction:column;
+    font-family: sans-serif;
 }
 
-/* 上部タイトル */
-
-header{
-    height:10vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    color:#5a2ca0;
-    font-size:24px;
-    font-weight:bold;
+/* エラーメッセージ */
+#error {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+    z-index: 10;
 }
 
-/* モデル表示 */
-
-.viewer-area{
-    height:75vh;
+/* ARビュー */
+model-viewer {
+    width: 100%;
+    height: 100%;
+    background: transparent;
 }
 
-model-viewer{
-    width:100%;
-    height:100%;
-    background:transparent;
+/* 写真ボタン（シンプル） */
+#photo-btn {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: #7c3aed;
+    color: white;
+
+    border: none;
+    border-radius: 999px;
+
+    padding: 14px 22px;
+    font-size: 16px;
+    font-weight: bold;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+
+    z-index: 10;
 }
 
-/* 下部ボタン */
-
-footer{
-    height:15vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
+#photo-btn:active {
+    transform: translateX(-50%) scale(0.98);
 }
-
-#ar-button{
-
-    background:#7c3aed;
-
-    color:white;
-
-    border:none;
-
-    border-radius:16px;
-
-    padding:16px 28px;
-
-    font-size:18px;
-    font-weight:bold;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.25);
-
-    cursor:pointer;
-}
-
-#ar-button:active{
-    transform:scale(0.98);
-}
-
 </style>
 </head>
 
 <body>
 
-<header>
-ARのテスト
-</header>
-
-<div class="viewer-area">
+<div id="error"></div>
 
 <model-viewer
-    src="fitnessquest_walking_animation.glb"
-    ios-src="fitnessquest_walking_animation.usdz"
-
+    id="viewer"
     ar
     ar-modes="webxr scene-viewer quick-look"
-
     camera-controls
     autoplay
-
     shadow-intensity="1">
-
-    <button slot="ar-button" id="ar-button">
-        📸 このキャラクターと写真を撮る
-    </button>
-
 </model-viewer>
 
-</div>
+<button id="photo-btn">📸 写真を撮る</button>
 
-<footer>
-</footer>
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const category = params.get("category");
+const number = params.get("number"); // egg / 1 / 2 / 3 など
+
+const errorBox = document.getElementById("error");
+
+function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.style.display = "block";
+}
+
+/**
+ * ❗バリデーション
+ */
+if (!category || !number) {
+    showError("URLパラメータが不足しています（category / number）");
+} else {
+
+    const fileName = `${category}_${number}_animation`;
+
+    const viewer = document.getElementById("viewer");
+
+    viewer.setAttribute("src", `${fileName}.glb`);
+    viewer.setAttribute("ios-src", `${fileName}.usdz`);
+
+}
+
+/**
+ * 写真ボタン（UIだけ）
+ * ※実際の撮影はmodel-viewer側AR機能に依存
+ */
+document.getElementById("photo-btn").addEventListener("click", () => {
+    alert("ARモードで写真を撮影してください");
+});
+</script>
 
 </body>
 </html>
