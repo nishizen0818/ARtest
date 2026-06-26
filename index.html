@@ -39,28 +39,6 @@ body {
     text-align: center;
 }
 
-#ar-guide {
-    position: absolute;
-    top: calc(env(safe-area-inset-top) + 20px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 15;
-    background: rgba(255, 255, 255, 0.92);
-    color: #333;
-    padding: 12px 18px;
-    border-radius: 14px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.6;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-    width: calc(100% - 32px);
-    max-width: 360px;
-    white-space: normal;
-
-    pointer-events: none; /* ←追加 */
-}
-
 /* ARビューのエリア */
 model-viewer {
     width: 100%;
@@ -100,11 +78,6 @@ model-viewer {
 <body>
 
 <div id="error"></div>
-
-<div id="ar-guide">
-    モンスターと写真が撮れます。<br>
-    写真は端末に保存されます。
-</div>
     
 <model-viewer
     id="viewer"
