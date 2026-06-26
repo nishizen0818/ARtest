@@ -44,26 +44,21 @@ body {
     top: calc(env(safe-area-inset-top) + 20px);
     left: 50%;
     transform: translateX(-50%);
-
     z-index: 15;
-
     background: rgba(255, 255, 255, 0.92);
     color: #333;
-
     padding: 12px 18px;
     border-radius: 14px;
-
     font-size: 14px;
     font-weight: 600;
     line-height: 1.6;
     text-align: center;
-
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-
     width: calc(100% - 32px);
     max-width: 360px;
-
     white-space: normal;
+
+    pointer-events: none; /* ←追加 */
 }
 
 /* ARビューのエリア */
@@ -217,36 +212,77 @@ if (!monsterId) {
         viewer.setAttribute("ios-src", `${fileName}.usdz`);
 
         // ボタン色を設定
+        // ボタン色を設定
         const colorSet = buttonColorMap[monsterInfo.category];
-            if (colorSet) {
-                // 通常時
+        if (colorSet) {
+            arButton.style.background = colorSet.base;
+            arButton.style.boxShadow = `0 4px 20px ${colorSet.base}66`;
+        
+            arButton.addEventListener("mouseenter", () => {
+                arButton.style.background = colorSet.hover;
+            });
+        
+            arButton.addEventListener("mouseleave", () => {
                 arButton.style.background = colorSet.base;
-                arButton.style.boxShadow = `0 4px 20px ${colorSet.base}66`;
-            
-                // hover時
-                arButton.addEventListener("mouseenter", () => {
-                    arButton.style.background = colorSet.hover;
-                });
-            
-                // hover解除時
-                arButton.addEventListener("mouseleave", () => {
-                    arButton.style.background = colorSet.base;
-                });
-            }
-
+            });
+        }
+        
         console.log(`[成功] モデルを読み込みました: ${fileName}`);
-        console.log(`[成功] ボタン色を設定しました: ${monsterInfo.category} → ${buttonColor}`);
+        if (colorSet) {
+            console.log(`[成功] ボタン色を設定しました: ${monsterInfo.category} → ${colorSet.base}`);
+        }
     }
 }
 
 /**
  * 「現実世界に呼び出す」ボタン
  */
-arButton.addEventListener("click", () => {
-    if (viewer) {
-        viewer.activateAR();
+arButton.addEventListener("click", async () => {
+    try {
+        if (!viewer) {
+            showError("ARビューアが見つかりません");
+            return;
+        }
+
+        console.log("AR起動ボタンが押されました");
+
+        // 現在設定されているモデル情報を取得
+        const src = viewer.getAttribute("src");
+        const iosSrc = viewer.getAttribute("ios-src");
+
+        console.log("monsterId:", monsterId);
+        console.log("src:", src);
+        console.log("ios-src:", iosSrc);
+        console.log("canActivateAR:", viewer.canActivateAR);
+
+        // モデル未設定チェック
+        if (!src) {
+            showError("モデルが読み込まれていません");
+            return;
+        }
+
+        // AR起動可否チェック
+        // false のときはその端末/ブラウザでは起動不可
+        if (viewer.canActivateAR === false) {
+            showError("この端末・ブラウザではARを起動できません");
+            return;
+        }
+
+        // model-viewer 側の読み込み完了を待つ
+        if (viewer.updateComplete) {
+            await viewer.updateComplete;
+        }
+
+        // AR起動
+        await viewer.activateAR();
+
+        console.log("AR起動処理を実行しました");
+    } catch (e) {
+        console.error("AR起動失敗:", e);
+        showError("ARを起動できませんでした。端末・ブラウザがARに対応していない可能性があります。");
     }
 });
+    
 </script>
 
 </body>
