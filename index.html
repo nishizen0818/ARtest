@@ -53,31 +53,25 @@ model-viewer {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-
-    background: #2563eb; /* 鮮やかなブルー */
     color: white;
-
     border: none;
     border-radius: 16px;
-
     padding: 16px 32px;
     font-size: 18px;
     font-weight: bold;
-
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
     z-index: 10;
-    
     display: flex;
     align-items: center;
     gap: 8px;
     white-space: nowrap;
-    transition: background 0.2s, transform 0.1s;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    cursor: pointer;
 }
 
 #ar-trigger-btn:active {
-    background: #1d4ed8;
     transform: translateX(-50%) scale(0.96);
 }
+    
 </style>
 </head>
 
@@ -105,6 +99,8 @@ const params = new URLSearchParams(window.location.search);
 const monsterId = params.get("monsterId");
 
 const errorBox = document.getElementById("error");
+const viewer = document.getElementById("viewer");
+const arButton = document.getElementById("ar-trigger-btn");
 
 function showError(msg) {
     errorBox.textContent = msg;
@@ -112,42 +108,67 @@ function showError(msg) {
 }
 
 /**
- * 🛠️ モンスターIDとファイル名のマッピング定義
+ * モンスターIDとファイル名のマッピング
  */
 const monsterMap = {
-    // 🟩 walking シリーズ
+    // walking
     1: { category: "walking", number: "egg" },
     2: { category: "walking", number: "1" },
     3: { category: "walking", number: "2" },
     4: { category: "walking", number: "3" },
-    
-    // 🟦 running シリーズ
+
+    // running
     5: { category: "running", number: "egg" },
     6: { category: "running", number: "1" },
     7: { category: "running", number: "2" },
     8: { category: "running", number: "3" },
 
-    // 🟥 strength シリーズ
-    9: { category: "strength", number: "egg" },
+    // strength
+    9:  { category: "strength", number: "egg" },
     10: { category: "strength", number: "1" },
     11: { category: "strength", number: "2" },
     12: { category: "strength", number: "3" },
 
-    // 🟨 stretch シリーズ
+    // stretch
     13: { category: "stretch", number: "egg" },
     14: { category: "stretch", number: "1" },
     15: { category: "stretch", number: "2" },
     16: { category: "stretch", number: "3" },
 
-    // 🟪 sports シリーズ
+    // sports
     17: { category: "sports", number: "egg" },
     18: { category: "sports", number: "1" },
     19: { category: "sports", number: "2" },
     20: { category: "sports", number: "3" }
 };
 
-const viewer = document.getElementById("viewer");
-
+/**
+ * ボタン色マップ
+ * Flutterの 0xFFxxxxxx → CSSの #xxxxxx に変換
+ */
+const buttonColorMap = {
+    walking: {
+        base: "#1E4620",
+        hover: "#295F2C"
+    },
+    running: {
+        base: "#774A0C",
+        hover: "#946015"
+    },
+    strength: {
+        base: "#5C2523",
+        hover: "#74312F"
+    },
+    stretch: {
+        base: "#3A2449",
+        hover: "#4B2F5F"
+    },
+    sports: {
+        base: "#2C3E50",
+        hover: "#3A5168"
+    }
+};
+    
 // 2. パラメータのチェックとモデルの読み込み
 if (!monsterId) {
     showError("URLパラメータが不足しています（monsterId がありません）");
@@ -158,18 +179,38 @@ if (!monsterId) {
         showError(`未登録のモンスターIDです (ID: ${monsterId})`);
     } else {
         const fileName = `${monsterInfo.category}_${monsterInfo.number}_animation`;
-        
+
+        // モデルを設定
         viewer.setAttribute("src", `${fileName}.glb`);
         viewer.setAttribute("ios-src", `${fileName}.usdz`);
 
+        // ボタン色を設定
+        const colorSet = buttonColorMap[monsterInfo.category];
+            if (colorSet) {
+                // 通常時
+                arButton.style.background = colorSet.base;
+                arButton.style.boxShadow = `0 4px 20px ${colorSet.base}66`;
+            
+                // hover時
+                arButton.addEventListener("mouseenter", () => {
+                    arButton.style.background = colorSet.hover;
+                });
+            
+                // hover解除時
+                arButton.addEventListener("mouseleave", () => {
+                    arButton.style.background = colorSet.base;
+                });
+            }
+
         console.log(`[成功] モデルを読み込みました: ${fileName}`);
+        console.log(`[成功] ボタン色を設定しました: ${monsterInfo.category} → ${buttonColor}`);
     }
 }
 
 /**
- * 🚀 「現実世界に呼び出す」ボタンが押された時の処理
+ * 「現実世界に呼び出す」ボタン
  */
-document.getElementById("ar-trigger-btn").addEventListener("click", () => {
+arButton.addEventListener("click", () => {
     if (viewer) {
         viewer.activateAR();
     }
